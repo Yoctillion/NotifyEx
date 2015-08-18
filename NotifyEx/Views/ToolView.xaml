@@ -1,0 +1,102 @@
+﻿<UserControl x:Class="NotifyEx.Views.ToolView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:NotifyEx.Views"
+             xmlns:viewModel="clr-namespace:NotifyEx.ViewModels"
+             xmlns:controls="http://schemes.grabacr.net/winfx/2014/controls"
+             xmlns:kanColleWrapper="clr-namespace:Grabacr07.KanColleWrapper;assembly=KanColleWrapper"
+             mc:Ignorable="d"
+             d:DataContext="{d:DesignInstance viewModel:ToolViewModel}"
+             d:DesignHeight="300" d:DesignWidth="400">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary
+                    Source="pack://application:,,,/KanColleViewer.Controls;component/Styles/Controls.Text.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MetroRadiance;component/Themes/Dark.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Auto"
+                  PanningMode="Both">
+        <StackPanel Margin="10, 4">
+            <TextBlock Text="出击"
+                       Style="{DynamicResource HeaderTextStyleKey}" />
+
+            <UniformGrid Columns="1" Margin="0,5,0,0">
+                <StackPanel Orientation="Horizontal" Margin="0,3">
+                    <CheckBox Content="母港空位不足通知"
+                              VerticalAlignment="Center"
+                              IsChecked="{Binding EnabledShipNotifier, Mode=TwoWay}" />
+
+                    <Border Width="1"
+                            Background="{DynamicResource ActiveBorderBrushKey}"
+                            Margin="10,5" />
+
+                    <TextBlock VerticalAlignment="Center"
+                               Text="剩余"
+                               Style="{DynamicResource DefaultTextStyleKey}" />
+
+                    <controls:PromptTextBox IsEnabled="{Binding EnabledShipNotifier}"
+                                            Width="35"
+                                            Margin="4,0">
+                        <controls:PromptTextBox.Text>
+                            <Binding Path="ShipWarningCount" Mode="TwoWay">
+                                <Binding.ValidationRules>
+                                    <controls:Int32Rule Min="0" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </controls:PromptTextBox.Text>
+                    </controls:PromptTextBox>
+
+                    <TextBlock VerticalAlignment="Center"
+                               Text="时通知"
+                               Style="{DynamicResource DefaultTextStyleKey}" />
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Margin="0,3">
+                    <CheckBox Content="装备空位不足通知"
+                              IsChecked="{Binding EnabledSlotNotifier}" />
+
+                    <Border Width="1"
+                            Background="{DynamicResource ActiveBorderBrushKey}"
+                            Margin="10,5" />
+
+                    <TextBlock VerticalAlignment="Center"
+                               Text="剩余"
+                               Style="{DynamicResource DefaultTextStyleKey}" />
+
+                    <controls:PromptTextBox IsEnabled="{Binding EnabledSlotNotifier}"
+                                            Width="35"
+                                            Margin="4,0">
+                        <controls:PromptTextBox.Text>
+                            <Binding Path="SlotWarningCount" Mode="TwoWay">
+                                <Binding.ValidationRules>
+                                    <controls:Int32Rule Min="0" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </controls:PromptTextBox.Text>
+                    </controls:PromptTextBox>
+
+                    <TextBlock VerticalAlignment="Center"
+                               Text="时通知"
+                               Style="{DynamicResource DefaultTextStyleKey}" />
+                </StackPanel>
+
+                <CheckBox Content="大破进击通知"
+                          IsChecked="{Binding EnabledHpNotifier, Mode=TwoWay}" />
+
+            </UniformGrid>
+            
+            <Border Height="1"
+                    Background="{DynamicResource ActiveBorderBrushKey}"
+                    Margin="0,5" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
