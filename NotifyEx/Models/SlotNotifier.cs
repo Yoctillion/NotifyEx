@@ -55,11 +55,13 @@ namespace NotifyEx.Models
 
 		private void CheckReminding()
 		{
+			if (!Enabled) return;
+
 			var port = KanColleClient.Current.Homeport;
 			var max = port.Admiral.MaxSlotItemCount;
 			var current = port.Itemyard.SlotItemsCount;
 			var reminding = max - current;
-			if (reminding <= WarningCount && Enabled)
+			if (reminding <= WarningCount)
 			{
 				_plugin.Notify("SlotNotify", "警告", $"装备剩余 {reminding} 空位");
 			}

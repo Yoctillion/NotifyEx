@@ -58,11 +58,13 @@ namespace NotifyEx.Models
 
 		private void CheckReminding()
 		{
+			if (!Enabled) return;
+			
 			var port = KanColleClient.Current.Homeport;
 			var maxShipCount = port.Admiral.MaxShipCount;
 			var currentShipCount = port.Organization.Ships.Count;
 			var reminding = maxShipCount - currentShipCount;
-			if (reminding <= WarningCount && Enabled)
+			if (reminding <= WarningCount)
 				_plugin.Notify("ShipNotify", "警告", $"母港剩余 {reminding} 空位");
 		}
 	}

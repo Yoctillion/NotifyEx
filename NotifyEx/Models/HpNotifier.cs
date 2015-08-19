@@ -55,6 +55,8 @@ namespace NotifyEx.Models
 			if (api_deck_id != null) CurrentDeckId = int.Parse(api_deck_id);
 			if (CurrentDeckId < 1) return;
 
+			if (!Enabled) return;
+
 			var organization = KanColleClient.Current.Homeport.Organization;
 
 			var lowHpList = new List<LowHpInfo>();
@@ -70,8 +72,8 @@ namespace NotifyEx.Models
 				var lowHpShips = (from ship in fleet.Ships
 								  where ship.Situation.HasFlag(ShipSituation.HeavilyDamaged)
 								  select ship.Info.Name
-								         + (ship.Situation.HasFlag(ShipSituation.DamageControlled) ? "(损管)" : "")
-								 ).ToArray();
+										 + (ship.Situation.HasFlag(ShipSituation.DamageControlled) ? "(损管)" : "")
+								  ).ToArray();
 
 				if (lowHpShips.Length > 0)
 					lowHpList.Add(new LowHpInfo { Name = fleet.Name, Ships = lowHpShips });
@@ -89,11 +91,8 @@ namespace NotifyEx.Models
 
 		private void Notify(List<LowHpInfo> list)
 		{
-			if (Enabled)
-			{
-				var info = string.Join(", ", list.Select(fleet => $"{fleet.Name} {string.Join(" ", fleet.Ships)}")) + " 大破！";
-				_plugin.Notify("HpNotify", "大破警告", info);
-			}
+			var info = string.Join(", ", list.Select(fleet => $"{fleet.Name} {string.Join(" ", fleet.Ships)}")) + " 大破！";
+			_plugin.Notify("HpNotify", "大破警告", info);
 		}
 	}
 }
