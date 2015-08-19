@@ -59,40 +59,24 @@ namespace NotifyEx.Models
 
 			var organization = KanColleClient.Current.Homeport.Organization;
 
-			var lowHpList = new List<LowHpInfo>();
-
 			Fleet[] fleets;
 			if (CurrentDeckId == 1 && organization.Combined)
 				fleets = new[] { organization.Fleets[1], organization.Fleets[2] };
 			else
 				fleets = new[] { organization.Fleets[CurrentDeckId] };
 
-			foreach (var fleet in fleets)
+			var lowHpList = (from fleet in fleets
+							 let ships = fleet.Ships
+							 from ship in ships
+							 where ship.Situation.HasFlag(ShipSituation.HeavilyDamaged)
+							 group ship.Info.Name + (ship.Situation.HasFlag(ShipSituation.DamageControlled) ? "(损管)" : "") by fleet.Name
+							 ).ToArray();
+
+			if (lowHpList.Any())
 			{
-				var lowHpShips = (from ship in fleet.Ships
-								  where ship.Situation.HasFlag(ShipSituation.HeavilyDamaged)
-								  select ship.Info.Name
-										 + (ship.Situation.HasFlag(ShipSituation.DamageControlled) ? "(损管)" : "")
-								  ).ToArray();
-
-				if (lowHpShips.Length > 0)
-					lowHpList.Add(new LowHpInfo { Name = fleet.Name, Ships = lowHpShips });
+				var info = string.Join(", ", lowHpList.Select(fleet => $"{fleet.Key} {string.Join(" ", fleet)}")) + " 大破！";
+				_plugin.Notify("HpNotify", "大破警告", info);
 			}
-
-			if (lowHpList.Count > 0)
-				Notify(lowHpList);
-		}
-
-		private class LowHpInfo
-		{
-			public string Name { get; set; }
-			public string[] Ships { get; set; }
-		}
-
-		private void Notify(List<LowHpInfo> list)
-		{
-			var info = string.Join(", ", list.Select(fleet => $"{fleet.Name} {string.Join(" ", fleet.Ships)}")) + " 大破！";
-			_plugin.Notify("HpNotify", "大破警告", info);
 		}
 	}
 }
