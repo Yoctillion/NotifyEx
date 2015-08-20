@@ -79,6 +79,19 @@ namespace NotifyEx.ViewModels
 			}
 		}
 
+		public bool EnabledShowDamageControl
+		{
+			get { return _hpNotifier.EnabledShowDamageControl; }
+			set
+			{
+				if (_hpNotifier.EnabledShowDamageControl != value)
+				{
+					_hpNotifier.EnabledShowDamageControl = value;
+					RaisePropertyChanged();
+				}
+			}
+		}
+
 		public ToolViewModel(Plugin plugin)
 		{
 			_shipNotifier = new ShipNotifier(plugin);

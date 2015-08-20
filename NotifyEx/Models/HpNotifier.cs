@@ -35,6 +35,23 @@ namespace NotifyEx.Models
 			}
 		}
 
+		/// <summary>
+		/// 是否显示装备损管的舰娘
+		/// </summary>
+		public bool EnabledShowDamageControl
+		{
+			get { return Settings.EnabledShowDamageControl; }
+			set
+			{
+				if (Settings.EnabledShowDamageControl != value)
+				{
+					Settings.EnabledShowDamageControl = value;
+					Settings.Save();
+					RaisePropertyChanged();
+				}
+			}
+		}
+
 		public HpNotifier(Plugin plugin)
 		{
 			_plugin = plugin;
@@ -69,6 +86,7 @@ namespace NotifyEx.Models
 							 let ships = fleet.Ships
 							 from ship in ships
 							 where ship.Situation.HasFlag(ShipSituation.HeavilyDamaged)
+								   && (EnabledShowDamageControl && ship.Situation.HasFlag(ShipSituation.DamageControlled))
 							 group ship.Info.Name + (ship.Situation.HasFlag(ShipSituation.DamageControlled) ? "(损管)" : "") by fleet.Name
 							 ).ToArray();
 

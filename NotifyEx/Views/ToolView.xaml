@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:NotifyEx.Views"
              xmlns:viewModel="clr-namespace:NotifyEx.ViewModels"
-             xmlns:controls="http://schemes.grabacr.net/winfx/2014/controls"
+             xmlns:metro="http://schemes.grabacr.net/winfx/2014/controls"
              xmlns:kanColleWrapper="clr-namespace:Grabacr07.KanColleWrapper;assembly=KanColleWrapper"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModel:ToolViewModel}"
@@ -26,10 +26,10 @@
                   VerticalScrollBarVisibility="Auto"
                   PanningMode="Both">
         <StackPanel Margin="10, 4">
-            <TextBlock Text="出击"
+            <TextBlock Text="母港"
                        Style="{DynamicResource HeaderTextStyleKey}" />
 
-            <UniformGrid Columns="1" Margin="0,5,0,0">
+            <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,3">
                     <CheckBox Content="母港空位不足通知"
                               VerticalAlignment="Center"
@@ -43,17 +43,18 @@
                                Text="剩余"
                                Style="{DynamicResource DefaultTextStyleKey}" />
 
-                    <controls:PromptTextBox IsEnabled="{Binding EnabledShipNotifier}"
-                                            Width="35"
-                                            Margin="4,0">
-                        <controls:PromptTextBox.Text>
+                    <metro:PromptTextBox IsEnabled="{Binding EnabledShipNotifier}"
+                                         Width="35"
+                                         Margin="4,0">
+                        <metro:PromptTextBox.Text>
                             <Binding Path="ShipWarningCount" Mode="TwoWay">
                                 <Binding.ValidationRules>
-                                    <controls:Int32Rule Min="0" />
+                                    <metro:Int32Rule Min="0" />
+                                    <metro:Int32Rule AllowsEmpty="False" />
                                 </Binding.ValidationRules>
                             </Binding>
-                        </controls:PromptTextBox.Text>
-                    </controls:PromptTextBox>
+                        </metro:PromptTextBox.Text>
+                    </metro:PromptTextBox>
 
                     <TextBlock VerticalAlignment="Center"
                                Text="时通知"
@@ -72,31 +73,41 @@
                                Text="剩余"
                                Style="{DynamicResource DefaultTextStyleKey}" />
 
-                    <controls:PromptTextBox IsEnabled="{Binding EnabledSlotNotifier}"
-                                            Width="35"
-                                            Margin="4,0">
-                        <controls:PromptTextBox.Text>
+                    <metro:PromptTextBox IsEnabled="{Binding EnabledSlotNotifier}"
+                                         Width="35"
+                                         Margin="4,0">
+                        <metro:PromptTextBox.Text>
                             <Binding Path="SlotWarningCount" Mode="TwoWay">
                                 <Binding.ValidationRules>
-                                    <controls:Int32Rule Min="0" />
+                                    <metro:Int32Rule Min="0" />
+                                    <metro:Int32Rule AllowsEmpty="False" />
                                 </Binding.ValidationRules>
                             </Binding>
-                        </controls:PromptTextBox.Text>
-                    </controls:PromptTextBox>
+                        </metro:PromptTextBox.Text>
+                    </metro:PromptTextBox>
 
                     <TextBlock VerticalAlignment="Center"
                                Text="时通知"
                                Style="{DynamicResource DefaultTextStyleKey}" />
                 </StackPanel>
 
-                <CheckBox Content="大破进击通知"
-                          IsChecked="{Binding EnabledHpNotifier, Mode=TwoWay}" />
+            </StackPanel>
 
-            </UniformGrid>
-            
             <Border Height="1"
                     Background="{DynamicResource ActiveBorderBrushKey}"
                     Margin="0,5" />
+
+            <TextBlock Text="出击"
+                       Style="{DynamicResource HeaderTextStyleKey}" />
+
+            <CheckBox Content="大破进击通知"
+                      IsChecked="{Binding EnabledHpNotifier, Mode=TwoWay}"
+                      Margin="0,3" />
+            
+            <CheckBox Content="显示装备损管的舰娘"
+                      IsChecked="{Binding EnabledShowDamageControl, Mode=TwoWay}"
+                      IsEnabled="{Binding EnabledHpNotifier}"
+                      Margin="20,3,0,3" />
         </StackPanel>
     </ScrollViewer>
 </UserControl>
