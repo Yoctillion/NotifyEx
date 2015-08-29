@@ -85,7 +85,8 @@ namespace NotifyEx.Models
 			var lowHpList = (from fleet in fleets
 							 let ships = fleet.Ships
 							 from ship in ships
-							 where ship.Situation.HasFlag(ShipSituation.HeavilyDamaged)
+							 where !(ship.Situation.HasFlag(ShipSituation.Tow) || ship.Situation.HasFlag(ShipSituation.Evacuation))
+							       && ship.Situation.HasFlag(ShipSituation.HeavilyDamaged)
 								   && (EnabledShowDamageControl && ship.Situation.HasFlag(ShipSituation.DamageControlled))
 							 group ship.Info.Name + (ship.Situation.HasFlag(ShipSituation.DamageControlled) ? "(损管)" : "") by fleet.Name
 							 ).ToArray();
