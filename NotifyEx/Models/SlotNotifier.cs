@@ -63,7 +63,7 @@ namespace NotifyEx.Models
 			var reminding = max - current;
 			if (reminding <= WarningCount)
 			{
-				_plugin.Notify("SlotNotify", "警告", $"装备剩余 {reminding} 空位");
+				_plugin.Notify("SlotNotify", "装备空位警告", $"装备仅剩余 {reminding} 空位");
 			}
 		}
 	}

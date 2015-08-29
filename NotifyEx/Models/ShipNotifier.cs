@@ -65,7 +65,7 @@ namespace NotifyEx.Models
 			var currentShipCount = port.Organization.Ships.Count;
 			var reminding = maxShipCount - currentShipCount;
 			if (reminding <= WarningCount)
-				_plugin.Notify("ShipNotify", "警告", $"母港剩余 {reminding} 空位");
+				_plugin.Notify("ShipNotify", "母港空位警告", $"母港仅剩余 {reminding} 空位");
 		}
 	}
 }
