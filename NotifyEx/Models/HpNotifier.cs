@@ -58,36 +58,25 @@ namespace NotifyEx.Models
 
 			var proxy = KanColleClient.Current.Proxy;
 
-			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_map/start")
-				.TryParse().Subscribe(x => CheckSituation(x.Request["api_deck_id"]));
+			proxy.api_req_map_start
+				.Subscribe(x => CheckSituation());
 
 			proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_req_map/next")
 				.Subscribe(x => CheckSituation());
 		}
 
-		private int CurrentDeckId { get; set; }
-
-		private void CheckSituation(string api_deck_id = null)
+		private void CheckSituation()
 		{
-			if (api_deck_id != null) CurrentDeckId = int.Parse(api_deck_id);
-			if (CurrentDeckId < 1) return;
-
 			if (!Enabled) return;
 
-			var organization = KanColleClient.Current.Homeport.Organization;
-
-			Fleet[] fleets;
-			if (CurrentDeckId == 1 && organization.Combined)
-				fleets = new[] { organization.Fleets[1], organization.Fleets[2] };
-			else
-				fleets = new[] { organization.Fleets[CurrentDeckId] };
+			var fleets = KanColleClient.Current.Homeport.Organization.Fleets.Values.Where(fleet => fleet.IsInSortie);
 
 			var lowHpList = (from fleet in fleets
 							 let ships = fleet.Ships
 							 from ship in ships
 							 where !(ship.Situation.HasFlag(ShipSituation.Tow) || ship.Situation.HasFlag(ShipSituation.Evacuation))
 							       && ship.Situation.HasFlag(ShipSituation.HeavilyDamaged)
-								   && (EnabledShowDamageControl && ship.Situation.HasFlag(ShipSituation.DamageControlled))
+								   && (EnabledShowDamageControl || !ship.Situation.HasFlag(ShipSituation.DamageControlled))
 							 group ship.Info.Name + (ship.Situation.HasFlag(ShipSituation.DamageControlled) ? "(损管)" : "") by fleet.Name
 							 ).ToArray();
 
