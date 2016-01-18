@@ -20,7 +20,7 @@ namespace NotifyEx
 	[ExportMetadata("Guid", "3190E362-3833-4953-87C3-B2C22C058EE8")]
 	[ExportMetadata("Title", "NotifyEx")]
 	[ExportMetadata("Description", "通知内容扩展")]
-	[ExportMetadata("Version", "0.3.0")]
+	[ExportMetadata("Version", "0.4.0")]
 	[ExportMetadata("Author", "@Yoctillion")]
 	public class Plugin : IPlugin, ITool, IRequestNotify
 	{

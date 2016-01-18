@@ -13,6 +13,7 @@ namespace NotifyEx.ViewModels
 		private readonly ShipNotifier _shipNotifier;
 		private readonly SlotNotifier _slotNotifier;
 		private readonly HpNotifier _hpNotifier;
+	    private readonly SupplyNotifier _supplyNotifier;
 
 		public bool EnabledShipNotifier
 		{
@@ -92,11 +93,65 @@ namespace NotifyEx.ViewModels
 			}
 		}
 
-		public ToolViewModel(Plugin plugin)
+	    public bool EnabledSupplyNotifier
+	    {
+            get { return _supplyNotifier.Enabled; }
+	        set
+	        {
+	            if (_supplyNotifier.Enabled != value)
+	            {
+	                _supplyNotifier.Enabled = value;
+                    RaisePropertyChanged();
+	            }
+	        }
+	    }
+
+        public bool EnabledSortieSupplyNotifier
+        {
+            get { return _supplyNotifier.EnabledSortie; }
+            set
+            {
+                if (_supplyNotifier.EnabledSortie != value)
+                {
+                    _supplyNotifier.EnabledSortie = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public bool EnabledExerciseSupplyNotifier
+        {
+            get { return _supplyNotifier.EnabledExercise; }
+            set
+            {
+                if (_supplyNotifier.EnabledExercise != value)
+                {
+                    _supplyNotifier.EnabledExercise = value;
+                    RaisePropertyChanged();
+                }
+            }
+        }
+
+        public bool EnabledExpenditionSupplyNotifier
+	    {
+            get { return _supplyNotifier.EnabledExpendition; }
+	        set
+	        {
+	            if (_supplyNotifier.EnabledExpendition != value)
+	            {
+	                _supplyNotifier.EnabledExpendition = value;
+                    RaisePropertyChanged();
+	            }
+	        }
+	    }
+
+
+        public ToolViewModel(Plugin plugin)
 		{
 			_shipNotifier = new ShipNotifier(plugin);
 			_slotNotifier = new SlotNotifier(plugin);
 			_hpNotifier = new HpNotifier(plugin);
+            _supplyNotifier = new SupplyNotifier(plugin);
 		}
 	}
 }

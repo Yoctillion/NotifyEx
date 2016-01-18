@@ -108,6 +108,28 @@
                       IsChecked="{Binding EnabledShowDamageControl, Mode=TwoWay}"
                       IsEnabled="{Binding EnabledHpNotifier}"
                       Margin="20,3,0,3" />
+
+            <CheckBox Content="补给不足通知"
+                      IsChecked="{Binding EnabledSupplyNotifier, Mode=TwoWay}"
+                      Margin="0,3" />
+
+            <StackPanel Orientation="Horizontal"
+                        Margin="20,0,0,0">
+                <CheckBox Content="出击"
+                          IsChecked="{Binding EnabledSortieSupplyNotifier, Mode=TwoWay}"
+                          IsEnabled="{Binding EnabledSupplyNotifier, Mode=OneWay}"
+                          Margin="0,3,15,3" />
+
+                <CheckBox Content="演习"
+                          IsChecked="{Binding EnabledExerciseSupplyNotifier, Mode=TwoWay}"
+                          IsEnabled="{Binding EnabledSupplyNotifier, Mode=OneWay}"
+                          Margin="0,3,15,3" />
+
+                <CheckBox Content="远征"
+                          IsChecked="{Binding EnabledExpenditionSupplyNotifier, Mode=TwoWay}"
+                          IsEnabled="{Binding EnabledSupplyNotifier, Mode=OneWay}"
+                          Margin="0,3,15,3" />
+            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

@@ -94,5 +94,53 @@ namespace NotifyEx.Properties {
                 this["EnabledShowDamageControl"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnabledSortieSupplyNotifier {
+            get {
+                return ((bool)(this["EnabledSortieSupplyNotifier"]));
+            }
+            set {
+                this["EnabledSortieSupplyNotifier"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnabledExerciseSupplyNotifier {
+            get {
+                return ((bool)(this["EnabledExerciseSupplyNotifier"]));
+            }
+            set {
+                this["EnabledExerciseSupplyNotifier"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnabledExpenditionSupplyNotifier {
+            get {
+                return ((bool)(this["EnabledExpenditionSupplyNotifier"]));
+            }
+            set {
+                this["EnabledExpenditionSupplyNotifier"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnabledSupplyNotifier {
+            get {
+                return ((bool)(this["EnabledSupplyNotifier"]));
+            }
+            set {
+                this["EnabledSupplyNotifier"] = value;
+            }
+        }
     }
 }
