@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Grabacr07.KanColleWrapper;
 using Grabacr07.KanColleWrapper.Models;
+using NotifyEx.Models.NotifyType;
 using NotifyEx.Properties;
 
 namespace NotifyEx.Models
@@ -13,11 +14,9 @@ namespace NotifyEx.Models
     /// <summary>
     /// 补给通知
     /// </summary>
-    public class SupplyNotifier
+    internal class SupplyNotifier
     {
         private static readonly Settings Settings = Settings.Default;
-
-        private readonly Plugin _plugin;
 
         public bool Enabled
         {
@@ -72,47 +71,44 @@ namespace NotifyEx.Models
         }
 
 
-        internal SupplyNotifier(Plugin plugin)
+        internal SupplyNotifier()
         {
-            _plugin = plugin;
-
-            var proxy = KanColleClient.Current.Proxy;
-
-            proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_get_member/mapinfo")
-                .Subscribe(x => CheckSortie());
-
-            proxy.ApiSessionSource.Where(
-                x =>
-                    x.Request.PathAndQuery == "/kcsapi/api_get_member/practice" ||
-                    x.Request.PathAndQuery == "/kcsapi/api_get_member/get_practice_enemyinfo")
-                .Subscribe(x => CheckExercise());
-
-            proxy.ApiSessionSource.Where(x => x.Request.PathAndQuery == "/kcsapi/api_get_member/mission")
-                .Subscribe(x => CheckExpendition());
+            var host = NotifyHost.Current;
+            var type = WarningType.Instance;
+            host.Register("/kcsapi/api_get_member/mapinfo", type, s => this.CheckSortie());
+            host.Register("/kcsapi/api_get_member/practice", type, s => this.CheckExercise());
+            host.Register("/kcsapi/api_get_member/get_practice_enemyinfo", type, s => this.CheckExercise());
+            host.Register("/kcsapi/api_get_member/mission", type, s => this.CheckExpendition());
         }
 
-        private void CheckSortie()
+        private string CheckSortie()
         {
-            if (!(Enabled && EnabledSortie)) return;
+            if (!(Enabled && EnabledSortie)) return null;
 
-            var lackSupplyFleets = GetLackSupplyFleets(false);
-            Notify(lackSupplyFleets);
+            return this.GetNotificationMsg(false);
         }
 
-        private void CheckExercise()
+        private string CheckExercise()
         {
-            if (!(Enabled && EnabledExercise)) return;
+            if (!(Enabled && EnabledExercise)) return null;
 
-            var lackSupplyFleets = GetLackSupplyFleets(false);
-            Notify(lackSupplyFleets);
+            return this.GetNotificationMsg(false);
         }
 
-        private void CheckExpendition()
+        private string CheckExpendition()
         {
-            if (!(Enabled && EnabledExpendition)) return;
+            if (!(Enabled && EnabledExpendition)) return null;
 
-            var lackSupplyFleets = GetLackSupplyFleets(true);
-            Notify(lackSupplyFleets);
+            return this.GetNotificationMsg(true);
+        }
+
+
+        private string GetNotificationMsg(bool isExpendition)
+        {
+            var fleets = this.GetLackSupplyFleets(isExpendition);
+
+            if (fleets.Length == 0) return null;
+            return string.Join(", ", fleets.Select(f => f.Name)) + " 补给不足！";
         }
 
         private Fleet[] GetLackSupplyFleets(bool isExpendition)
@@ -120,15 +116,9 @@ namespace NotifyEx.Models
             var fleets = KanColleClient.Current.Homeport.Organization.Fleets.Values;
             if (isExpendition) fleets = fleets.Skip(1);
 
-            return fleets.Where(f => f.State.Situation != FleetSituation.Expedition && !f.State.IsReady).ToArray();
-        }
-
-        private void Notify(Fleet[] lackSupplyFleets)
-        {
-            if (lackSupplyFleets.Length == 0) return;
-
-            var info = string.Join(", ", lackSupplyFleets.Select(f => f.Name)) + " 补给不足！";
-            _plugin.Notify("SupplyNotify", "补给不足", info);
+            return fleets.Where(f => f.State.Situation != FleetSituation.Expedition &&
+                                     f.Ships.Any(s => s.Fuel.Current < s.Fuel.Maximum || s.Bull.Current < s.Bull.Maximum))
+                .ToArray();
         }
     }
 }

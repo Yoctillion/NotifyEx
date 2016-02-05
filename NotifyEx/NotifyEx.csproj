@@ -143,6 +143,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Models\HpNotifier.cs" />
+    <Compile Include="Models\NotifyHost.cs" />
+    <Compile Include="Models\NotifyType\INotifyType.cs" />
+    <Compile Include="Models\NotifyType\WarningType.cs" />
     <Compile Include="Models\ShipNotifier.cs" />
     <Compile Include="Models\SlotNotifier.cs" />
     <Compile Include="Models\SupplyNotifier.cs" />
