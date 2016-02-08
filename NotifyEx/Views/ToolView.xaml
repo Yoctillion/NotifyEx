@@ -6,7 +6,6 @@
              xmlns:local="clr-namespace:NotifyEx.Views"
              xmlns:viewModel="clr-namespace:NotifyEx.ViewModels"
              xmlns:metro="http://schemes.grabacr.net/winfx/2014/controls"
-             xmlns:kanColleWrapper="clr-namespace:Grabacr07.KanColleWrapper;assembly=KanColleWrapper"
              mc:Ignorable="d"
              d:DataContext="{d:DesignInstance viewModel:ToolViewModel}"
              d:DesignHeight="300" d:DesignWidth="400">
