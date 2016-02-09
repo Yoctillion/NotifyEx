@@ -18,6 +18,8 @@ namespace NotifyEx.Models
     /// </summary>
     internal class HpNotifier
     {
+        public static HpNotifier Current = new HpNotifier();
+
         private static readonly Settings Settings = Settings.Default;
 
         public bool Enabled
@@ -49,11 +51,10 @@ namespace NotifyEx.Models
             }
         }
 
-        public HpNotifier()
+        private HpNotifier()
         {
-            var host = NotifyHost.Current;
-            host.Register("/kcsapi/api_req_map/start", WarningType.Instance, s => this.CheckSituation());
-            host.Register("/kcsapi/api_req_map/next", WarningType.Instance, s => this.CheckSituation());
+            NotifyHost.Register("/kcsapi/api_req_map/start", WarningType.Instance, s => this.CheckSituation());
+            NotifyHost.Register("/kcsapi/api_req_map/next", WarningType.Instance, s => this.CheckSituation());
         }
 
         private string CheckSituation()

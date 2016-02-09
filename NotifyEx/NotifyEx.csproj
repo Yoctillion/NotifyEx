@@ -137,6 +137,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\HomeportSpaceProcess.cs" />
     <Compile Include="Models\HpNotifier.cs" />
     <Compile Include="Models\NotifyHost.cs" />
     <Compile Include="Models\NotifyType\INotifyType.cs" />
@@ -144,6 +145,7 @@
     <Compile Include="Models\ShipNotifier.cs" />
     <Compile Include="Models\SlotNotifier.cs" />
     <Compile Include="Models\SupplyNotifier.cs" />
+    <Compile Include="Models\IWarningCounter.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="ViewModels\ToolViewModel.cs" />
     <Compile Include="Views\ToolView.xaml.cs">

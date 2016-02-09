@@ -10,10 +10,10 @@ namespace NotifyEx.ViewModels
 {
     public class ToolViewModel : ViewModel
     {
-        private readonly ShipNotifier _shipNotifier;
-        private readonly SlotNotifier _slotNotifier;
-        private readonly HpNotifier _hpNotifier;
-        private readonly SupplyNotifier _supplyNotifier;
+        private readonly ShipNotifier _shipNotifier = ShipNotifier.Current;
+        private readonly SlotNotifier _slotNotifier = SlotNotifier.Current;
+        private readonly HpNotifier _hpNotifier = HpNotifier.Current;
+        private readonly SupplyNotifier _supplyNotifier = SupplyNotifier.Current;
 
         public bool EnabledShipNotifier
         {
@@ -145,13 +145,5 @@ namespace NotifyEx.ViewModels
             }
         }
 
-
-        public ToolViewModel()
-        {
-            _shipNotifier = new ShipNotifier();
-            _slotNotifier = new SlotNotifier();
-            _hpNotifier = new HpNotifier();
-            _supplyNotifier = new SupplyNotifier();
-        }
     }
 }

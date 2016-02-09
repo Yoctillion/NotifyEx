@@ -14,9 +14,15 @@ namespace NotifyEx.Models
     {
         public static NotifyHost Current { get; internal set; }
 
+        public static event Action InstanceInitialized;
+
         internal static void TryInitialize(Plugin notifier)
         {
-            if (Current == null) Current = new NotifyHost(notifier);
+            if (Current == null)
+            {
+                Current = new NotifyHost(notifier);
+                InstanceInitialized?.Invoke();
+            }
         }
 
 
@@ -67,13 +73,45 @@ namespace NotifyEx.Models
 
         private readonly Dictionary<NotifyTypeKey, Func<Session, string>> _notifyProviders = new Dictionary<NotifyTypeKey, Func<Session, string>>();
 
-        /// <summary>
-        /// 注册通知操作
-        /// </summary>
-        /// <param name="kcapi">监视的API</param>
-        /// <param name="type">通知类型</param>
-        /// <param name="notifyProvider">return null => 不进行通知</param>
-        public void Register(string kcapi, INotifyType type, Func<Session, string> notifyProvider)
+        ///// <summary>
+        ///// 注册通知操作
+        ///// </summary>
+        ///// <param name="kcapi">监视的API</param>
+        ///// <param name="type">通知类型</param>
+        ///// <param name="notifyProvider">return null => 不进行通知</param>
+        //public void Register(string kcapi, INotifyType type, Func<Session, string> notifyProvider)
+        //{
+        //    var key = new NotifyTypeKey(kcapi, type);
+
+        //    Func<Session, string> action;
+        //    if (this._notifyProviders.TryGetValue(key, out action))
+        //    {
+        //        action += notifyProvider;
+        //        this._notifyProviders[key] = action;
+        //    }
+        //    else
+        //    {
+        //        this._notifyProviders.Add(key, notifyProvider);
+
+        //        KanColleClient.Current.Proxy.ApiSessionSource
+        //            .Where(s => s.Request.PathAndQuery == kcapi)
+        //            .Subscribe(s => this.Notify(s, key));
+        //    }
+        //}
+
+        public static void Register(string kcapi, INotifyType type, Func<Session, string> notifyProvider)
+        {
+            if (Current != null)
+            {
+                Current._Register(kcapi, type, notifyProvider);
+            }
+            else
+            {
+                InstanceInitialized += () => Current._Register(kcapi, type, notifyProvider);
+            }
+        }
+
+        private void _Register(string kcapi, INotifyType type, Func<Session, string> notifyProvider)
         {
             var key = new NotifyTypeKey(kcapi, type);
 
@@ -89,9 +127,10 @@ namespace NotifyEx.Models
 
                 KanColleClient.Current.Proxy.ApiSessionSource
                     .Where(s => s.Request.PathAndQuery == kcapi)
-                    .Subscribe(s => this.Notify(s, key));
+                    .Subscribe(s => Current.Notify(s, key));
             }
         }
+
 
         private void Notify(Session session, NotifyTypeKey key)
         {
@@ -108,7 +147,7 @@ namespace NotifyEx.Models
 
         public void Notify(string type, string header, string body)
         {
-            this._notifier.Notify(type, header, body);
+            Current?._notifier.Notify(type, header, body);
         }
     }
 }

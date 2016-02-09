@@ -16,6 +16,8 @@ namespace NotifyEx.Models
     /// </summary>
     internal class SupplyNotifier
     {
+        public static SupplyNotifier Current { get; } = new SupplyNotifier();
+
         private static readonly Settings Settings = Settings.Default;
 
         public bool Enabled
@@ -71,14 +73,13 @@ namespace NotifyEx.Models
         }
 
 
-        internal SupplyNotifier()
+        private SupplyNotifier()
         {
-            var host = NotifyHost.Current;
             var type = WarningType.Instance;
-            host.Register("/kcsapi/api_get_member/mapinfo", type, s => this.CheckSortie());
-            host.Register("/kcsapi/api_get_member/practice", type, s => this.CheckExercise());
-            host.Register("/kcsapi/api_get_member/get_practice_enemyinfo", type, s => this.CheckExercise());
-            host.Register("/kcsapi/api_get_member/mission", type, s => this.CheckExpendition());
+            NotifyHost.Register("/kcsapi/api_get_member/mapinfo", type, s => this.CheckSortie());
+            NotifyHost.Register("/kcsapi/api_get_member/practice", type, s => this.CheckExercise());
+            NotifyHost.Register("/kcsapi/api_get_member/get_practice_enemyinfo", type, s => this.CheckExercise());
+            NotifyHost.Register("/kcsapi/api_get_member/mission", type, s => this.CheckExpendition());
         }
 
         private string CheckSortie()
