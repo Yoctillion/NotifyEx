@@ -60,7 +60,7 @@ namespace NotifyEx.Models
             {
                 this.State = TaskbarItemProgressState.Error;
             }
-            else if (minValue <= 1)
+            else if (minValue < 1)
             {
                 this.State = TaskbarItemProgressState.Paused;
             }
