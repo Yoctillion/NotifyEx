@@ -37,28 +37,16 @@ namespace NotifyEx.Models
             }
         }
 
-        public uint WarningCount
-        {
-            get { return Settings.WarningShipCount; }
-            set
-            {
-                if (Settings.WarningShipCount != value)
-                {
-                    Settings.WarningShipCount = value;
-                    Settings.Save();
-                    this.RaisePropertyChanged();
-                }
-            }
-        }
+        public uint WarningCount =>
+            this.EnabledEvent && Util.IsInEvent
+                ? this.EventWarningCount
+                : this.NormalWarningCount;
 
         private uint _remain = uint.MaxValue;
 
         public uint Remain
         {
-            get
-            {
-                return this._remain;
-            }
+            get { return this._remain; }
             private set
             {
                 if (this._remain != value)
@@ -69,12 +57,58 @@ namespace NotifyEx.Models
             }
         }
 
+        public uint NormalWarningCount
+        {
+            get { return Settings.WarningShipCount; }
+            set
+            {
+                if (Settings.WarningShipCount != value)
+                {
+                    Settings.WarningShipCount = value;
+                    Settings.Save();
+                    this.RaisePropertyChanged();
+                    this.RaisePropertyChanged(nameof(this.WarningCount));
+                }
+            }
+        }
+
+        public bool EnabledEvent
+        {
+            get { return Settings.EnabledEventShipNotifier; }
+            set
+            {
+                if (Settings.EnabledEventShipNotifier != value)
+                {
+                    Settings.EnabledEventShipNotifier = value;
+                    Settings.Save();
+                    this.RaisePropertyChanged();
+                    this.RaisePropertyChanged(nameof(this.WarningCount));
+                }
+            }
+        }
+
+        public uint EventWarningCount
+        {
+            get { return Settings.EventWarningShipCount; }
+            set
+            {
+                if (Settings.EventWarningShipCount != value)
+                {
+                    Settings.EventWarningShipCount = value;
+                    Settings.Save();
+                    this.RaisePropertyChanged();
+                    this.RaisePropertyChanged(nameof(this.WarningCount));
+                }
+            }
+        }
+
+
         private ShipNotifier()
         {
             NotifyHost.Register("/kcsapi/api_get_member/mapinfo", WarningType.Instance, s => CheckReminding());
 
             KanColleClient.Current
-                .Subscribe(nameof(KanColleClient.Current.IsStarted), this.Initialize, false)
+                .Subscribe(nameof(KanColleClient.IsStarted), this.Initialize, false)
                 .AddTo(this);
         }
 
@@ -90,10 +124,10 @@ namespace NotifyEx.Models
                 this._initialized = true;
 
                 homeport.Organization
-                    .Subscribe(nameof(homeport.Organization.Ships), this.UpdateRemainCount)
+                    .Subscribe(nameof(Organization.Ships), this.UpdateRemainCount)
                     .AddTo(this);
                 homeport
-                    .Subscribe(nameof(homeport.Admiral), this.UpdateRemainCount)
+                    .Subscribe(nameof(Homeport.Admiral), this.UpdateRemainCount)
                     .AddTo(this);
             }
         }

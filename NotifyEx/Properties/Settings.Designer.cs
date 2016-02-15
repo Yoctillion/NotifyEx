@@ -142,5 +142,53 @@ namespace NotifyEx.Properties {
                 this["EnabledSupplyNotifier"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnabledEventShipNotifier {
+            get {
+                return ((bool)(this["EnabledEventShipNotifier"]));
+            }
+            set {
+                this["EnabledEventShipNotifier"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5")]
+        public uint EventWarningShipCount {
+            get {
+                return ((uint)(this["EventWarningShipCount"]));
+            }
+            set {
+                this["EventWarningShipCount"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnabledEventSlotNotifier {
+            get {
+                return ((bool)(this["EnabledEventSlotNotifier"]));
+            }
+            set {
+                this["EnabledEventSlotNotifier"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("20")]
+        public uint EventWarningSlotCount {
+            get {
+                return ((uint)(this["EventWarningSlotCount"]));
+            }
+            set {
+                this["EventWarningSlotCount"] = value;
+            }
+        }
     }
 }

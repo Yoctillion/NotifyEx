@@ -146,6 +146,7 @@
     <Compile Include="Models\SlotNotifier.cs" />
     <Compile Include="Models\SupplyNotifier.cs" />
     <Compile Include="Models\IWarningCounter.cs" />
+    <Compile Include="Models\Util.cs" />
     <Compile Include="Plugin.cs" />
     <Compile Include="ViewModels\ToolViewModel.cs" />
     <Compile Include="Views\ToolView.xaml.cs">

@@ -30,13 +30,39 @@ namespace NotifyEx.ViewModels
 
         public uint ShipWarningCount
         {
-            get { return _shipNotifier.WarningCount; }
+            get { return _shipNotifier.NormalWarningCount; }
             set
             {
-                if (_shipNotifier.WarningCount != value)
+                if (_shipNotifier.NormalWarningCount != value)
                 {
-                    _shipNotifier.WarningCount = value;
+                    _shipNotifier.NormalWarningCount = value;
                     RaisePropertyChanged();
+                }
+            }
+        }
+
+        public bool EnabledEventShipNotifier
+        {
+            get { return this._shipNotifier.EnabledEvent; }
+            set
+            {
+                if (this._shipNotifier.EnabledEvent != value)
+                {
+                    this._shipNotifier.EnabledEvent = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public uint EventShipWarningCount
+        {
+            get { return this._shipNotifier.EventWarningCount; }
+            set
+            {
+                if (this._shipNotifier.EventWarningCount != value)
+                {
+                    this._shipNotifier.EventWarningCount = value;
+                    this.RaisePropertyChanged();
                 }
             }
         }
@@ -56,13 +82,39 @@ namespace NotifyEx.ViewModels
 
         public uint SlotWarningCount
         {
-            get { return _slotNotifier.WarningCount; }
+            get { return _slotNotifier.NormalWarningCount; }
             set
             {
-                if (_slotNotifier.WarningCount != value)
+                if (_slotNotifier.NormalWarningCount != value)
                 {
-                    _slotNotifier.WarningCount = value;
+                    _slotNotifier.NormalWarningCount = value;
                     RaisePropertyChanged();
+                }
+            }
+        }
+
+        public bool EnabledEventSlotNotifier
+        {
+            get { return this._slotNotifier.EnabledEvent; }
+            set
+            {
+                if (this._slotNotifier.EnabledEvent != value)
+                {
+                    this._slotNotifier.EnabledEvent = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public uint EventSlotWarningCount
+        {
+            get { return this._slotNotifier.EventWarningCount; }
+            set
+            {
+                if (this._slotNotifier.EventWarningCount != value)
+                {
+                    this._slotNotifier.EventWarningCount = value;
+                    this.RaisePropertyChanged();
                 }
             }
         }

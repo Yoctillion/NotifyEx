@@ -45,9 +45,9 @@ namespace NotifyEx.Models
 
             foreach (var counter in this._counters)
             {
-                counter.Subscribe(nameof(counter.Enabled), this.Update).AddTo(this);
-                counter.Subscribe(nameof(counter.WarningCount), this.Update).AddTo(this);
-                counter.Subscribe(nameof(counter.Remain), this.Update).AddTo(this);
+                counter.Subscribe(nameof(IWarningCounter.Enabled), this.Update).AddTo(this);
+                counter.Subscribe(nameof(IWarningCounter.WarningCount), this.Update).AddTo(this);
+                counter.Subscribe(nameof(IWarningCounter.Remain), this.Update).AddTo(this);
             }
         }
 

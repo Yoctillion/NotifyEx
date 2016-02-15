@@ -31,7 +31,6 @@
             <StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,3">
                     <CheckBox Content="母港空位不足通知"
-                              VerticalAlignment="Center"
                               IsChecked="{Binding EnabledShipNotifier, Mode=TwoWay}" />
 
                     <Border Width="1"
@@ -40,7 +39,8 @@
 
                     <TextBlock VerticalAlignment="Center"
                                Text="剩余"
-                               Style="{DynamicResource DefaultTextStyleKey}" />
+                               Style="{DynamicResource DefaultTextStyleKey}"
+                               IsEnabled="{Binding EnabledShipNotifier}" />
 
                     <metro:PromptTextBox IsEnabled="{Binding EnabledShipNotifier}"
                                          Width="35"
@@ -57,7 +57,42 @@
 
                     <TextBlock VerticalAlignment="Center"
                                Text="时通知"
-                               Style="{DynamicResource DefaultTextStyleKey}" />
+                               Style="{DynamicResource DefaultTextStyleKey}"
+                               Margin="0,2"
+                               IsEnabled="{Binding EnabledShipNotifier}" />
+
+                    <Border Width="15" />
+
+                    <CheckBox Margin="0,2"
+                              Content="活动时"
+                              IsChecked="{Binding EnabledEventShipNotifier}"
+                              IsEnabled="{Binding EnabledShipNotifier}">
+                    </CheckBox>
+
+                    <metro:PromptTextBox Width="35"
+                                         Margin="4,0">
+                        <metro:PromptTextBox.Style>
+                            <Style TargetType="{x:Type metro:PromptTextBox}">
+                                <Setter Property="IsEnabled"
+                                        Value="{Binding EnabledEventShipNotifier}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding EnabledShipNotifier}"
+                                                 Value="False">
+                                        <Setter Property="IsEnabled"
+                                                Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </metro:PromptTextBox.Style>
+                        <metro:PromptTextBox.Text>
+                            <Binding Path="EventShipWarningCount" Mode="TwoWay">
+                                <Binding.ValidationRules>
+                                    <metro:Int32Rule Min="0" />
+                                    <metro:Int32Rule AllowsEmpty="False" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </metro:PromptTextBox.Text>
+                    </metro:PromptTextBox>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Margin="0,3">
@@ -70,7 +105,8 @@
 
                     <TextBlock VerticalAlignment="Center"
                                Text="剩余"
-                               Style="{DynamicResource DefaultTextStyleKey}" />
+                               Style="{DynamicResource DefaultTextStyleKey}"
+                               IsEnabled="{Binding EnabledSlotNotifier}" />
 
                     <metro:PromptTextBox IsEnabled="{Binding EnabledSlotNotifier}"
                                          Width="35"
@@ -87,7 +123,42 @@
 
                     <TextBlock VerticalAlignment="Center"
                                Text="时通知"
-                               Style="{DynamicResource DefaultTextStyleKey}" />
+                               Style="{DynamicResource DefaultTextStyleKey}"
+                               IsEnabled="{Binding EnabledSlotNotifier}"
+                               Margin="0,2" />
+
+                    <Border Width="15" />
+
+                    <CheckBox Margin="0,2"
+                              Content="活动时"
+                              IsChecked="{Binding EnabledEventSlotNotifier}"
+                              IsEnabled="{Binding EnabledSlotNotifier}">
+                    </CheckBox>
+
+                    <metro:PromptTextBox Width="35"
+                                         Margin="4,0">
+                        <metro:PromptTextBox.Style>
+                            <Style TargetType="{x:Type metro:PromptTextBox}">
+                                <Setter Property="IsEnabled"
+                                        Value="{Binding EnabledEventSlotNotifier}" />
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding EnabledSlotNotifier}"
+                                                 Value="False">
+                                        <Setter Property="IsEnabled"
+                                                Value="False" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </metro:PromptTextBox.Style>
+                        <metro:PromptTextBox.Text>
+                            <Binding Path="EventSlotWarningCount" Mode="TwoWay">
+                                <Binding.ValidationRules>
+                                    <metro:Int32Rule Min="0" />
+                                    <metro:Int32Rule AllowsEmpty="False" />
+                                </Binding.ValidationRules>
+                            </Binding>
+                        </metro:PromptTextBox.Text>
+                    </metro:PromptTextBox>
                 </StackPanel>
 
             </StackPanel>
@@ -102,11 +173,13 @@
             <CheckBox Content="大破进击通知"
                       IsChecked="{Binding EnabledHpNotifier, Mode=TwoWay}"
                       Margin="0,3" />
-            
+
             <CheckBox Content="显示装备损管的舰娘"
                       IsChecked="{Binding EnabledShowDamageControl, Mode=TwoWay}"
                       IsEnabled="{Binding EnabledHpNotifier}"
                       Margin="20,3,0,3" />
+
+            <Border Height="4" />
 
             <CheckBox Content="补给不足通知"
                       IsChecked="{Binding EnabledSupplyNotifier, Mode=TwoWay}"
@@ -132,3 +205,4 @@
         </StackPanel>
     </ScrollViewer>
 </UserControl>
+

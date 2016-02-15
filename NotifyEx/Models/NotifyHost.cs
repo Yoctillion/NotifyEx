@@ -78,27 +78,7 @@ namespace NotifyEx.Models
         ///// </summary>
         ///// <param name="kcapi">监视的API</param>
         ///// <param name="type">通知类型</param>
-        ///// <param name="notifyProvider">return null => 不进行通知</param>
-        //public void Register(string kcapi, INotifyType type, Func<Session, string> notifyProvider)
-        //{
-        //    var key = new NotifyTypeKey(kcapi, type);
-
-        //    Func<Session, string> action;
-        //    if (this._notifyProviders.TryGetValue(key, out action))
-        //    {
-        //        action += notifyProvider;
-        //        this._notifyProviders[key] = action;
-        //    }
-        //    else
-        //    {
-        //        this._notifyProviders.Add(key, notifyProvider);
-
-        //        KanColleClient.Current.Proxy.ApiSessionSource
-        //            .Where(s => s.Request.PathAndQuery == kcapi)
-        //            .Subscribe(s => this.Notify(s, key));
-        //    }
-        //}
-
+        ///// <param name="notifyProvider">return null or "" => 不进行通知</param>
         public static void Register(string kcapi, INotifyType type, Func<Session, string> notifyProvider)
         {
             if (Current != null)

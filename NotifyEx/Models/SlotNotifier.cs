@@ -5,6 +5,7 @@ using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Grabacr07.KanColleWrapper;
+using Grabacr07.KanColleWrapper.Models;
 using Livet;
 using MetroTrilithon.Lifetime;
 using MetroTrilithon.Mvvm;
@@ -34,28 +35,16 @@ namespace NotifyEx.Models
             }
         }
 
-        public uint WarningCount
-        {
-            get { return Settings.WarningSlotCount; }
-            set
-            {
-                if (Settings.WarningSlotCount != value)
-                {
-                    Settings.WarningSlotCount = value;
-                    Settings.Save();
-                    this.RaisePropertyChanged();
-                }
-            }
-        }
+        public uint WarningCount =>
+            this.EnabledEvent && Util.IsInEvent
+                ? this.EventWarningCount
+                : Settings.WarningSlotCount;
 
         private uint _remain = uint.MaxValue;
 
         public uint Remain
         {
-            get
-            {
-                return this._remain;
-            }
+            get { return this._remain; }
             private set
             {
                 if (this._remain != value)
@@ -66,13 +55,58 @@ namespace NotifyEx.Models
             }
         }
 
+        public uint NormalWarningCount
+        {
+            get { return Settings.WarningSlotCount; }
+            set
+            {
+                if (Settings.WarningSlotCount != value)
+                {
+                    Settings.WarningSlotCount = value;
+                    Settings.Save();
+                    this.RaisePropertyChanged();
+                    this.RaisePropertyChanged(nameof(this.WarningCount));
+                }
+            }
+        }
+
+        public bool EnabledEvent
+        {
+            get { return Settings.EnabledEventSlotNotifier; }
+            set
+            {
+                if (Settings.EnabledEventSlotNotifier != value)
+                {
+                    Settings.EnabledEventSlotNotifier = value;
+                    Settings.Save();
+                    this.RaisePropertyChanged();
+                    this.RaisePropertyChanged(nameof(this.WarningCount));
+                }
+            }
+        }
+
+        public uint EventWarningCount
+        {
+            get { return Settings.EventWarningSlotCount; }
+            set
+            {
+                if (Settings.EventWarningSlotCount != value)
+                {
+                    Settings.EventWarningSlotCount = value;
+                    Settings.Save();
+                    this.RaisePropertyChanged();
+                    this.RaisePropertyChanged(nameof(this.WarningCount));
+                }
+            }
+        }
+
 
         private SlotNotifier()
         {
             NotifyHost.Register("/kcsapi/api_get_member/mapinfo", WarningType.Instance, s => this.CheckReminding());
 
             KanColleClient.Current
-                .Subscribe(nameof(KanColleClient.Current.IsStarted), this.Initialize, false)
+                .Subscribe(nameof(KanColleClient.IsStarted), this.Initialize, false)
                 .AddTo(this);
         }
 
@@ -88,10 +122,10 @@ namespace NotifyEx.Models
                 this._initialized = true;
 
                 homeport.Itemyard
-                    .Subscribe(nameof(homeport.Itemyard.SlotItemsCount), this.UpdateRemainCount)
+                    .Subscribe(nameof(Itemyard.SlotItemsCount), this.UpdateRemainCount)
                     .AddTo(this);
                 homeport.Admiral
-                    .Subscribe(nameof(homeport.Admiral.MaxSlotItemCount), this.UpdateRemainCount)
+                    .Subscribe(nameof(Admiral.MaxSlotItemCount), this.UpdateRemainCount)
                     .AddTo(this);
             }
         }
