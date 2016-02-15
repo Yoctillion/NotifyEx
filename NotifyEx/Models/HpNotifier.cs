@@ -50,28 +50,38 @@ namespace NotifyEx.Models
 
         private HpNotifier()
         {
-            NotifyHost.Register("/kcsapi/api_req_map/start", WarningType.Instance, s => this.CheckSituation());
-            NotifyHost.Register("/kcsapi/api_req_map/next", WarningType.Instance, s => this.CheckSituation());
+            NotifyHost.Register("/kcsapi/api_get_member/mapinfo", WarningType.Instance, s => this.CheckSituation(false));
+            NotifyHost.Register("/kcsapi/api_req_map/start", WarningType.Instance, s => this.CheckSituation(true));
+            NotifyHost.Register("/kcsapi/api_req_map/next", WarningType.Instance, s => this.CheckSituation(true));
         }
 
-        private string CheckSituation()
+        private string CheckSituation(bool isInSortie)
         {
             if (!Enabled) return null;
 
-            var fleets = KanColleClient.Current.Homeport.Organization.Fleets.Values.Where(fleet => fleet.IsInSortie);
+            var fleets = KanColleClient.Current.Homeport.Organization.Fleets.Values
+                .Where(f => isInSortie ? f.IsInSortie : !f.Expedition.IsInExecution)
+                .Select(f => new
+                {
+                    f.Name,
+                    Ships = f.Ships.Where(this.FilterShip)
+                        .Select(s => s.Info.Name + (s.Situation.HasFlag(ShipSituation.DamageControlled) ? "(损管)" : ""))
+                        .ToArray()
+                })
+                .Where(f => f.Ships.Length > 0)
+                .ToArray();
 
-            var lowHpList = (from fleet in fleets
-                             let ships = fleet.Ships
-                             from ship in ships
-                             where !(ship.Situation.HasFlag(ShipSituation.Tow) || ship.Situation.HasFlag(ShipSituation.Evacuation))
-                                   && ship.Situation.HasFlag(ShipSituation.HeavilyDamaged)
-                                   && (EnabledShowDamageControl || !ship.Situation.HasFlag(ShipSituation.DamageControlled))
-                             group ship.Info.Name + (ship.Situation.HasFlag(ShipSituation.DamageControlled) ? "(损管)" : "") by fleet.Name
-                ).ToArray();
+            if (fleets.Length == 0) return null;
 
-            if (lowHpList.Length == 0) return null;
+            return string.Join(", ", fleets.Select(f => $"{f.Name} {string.Join(" ", f.Ships)}")) + " 大破！";
+        }
 
-            return string.Join(", ", lowHpList.Select(fleet => $"{fleet.Key} {string.Join(" ", fleet)}")) + " 大破！";
+        private bool FilterShip(Ship ship)
+        {
+            var situation = ship.Situation;
+            return !(situation.HasFlag(ShipSituation.Tow) || situation.HasFlag(ShipSituation.Evacuation))
+                   && situation.HasFlag(ShipSituation.HeavilyDamaged)
+                   && (this.EnabledShowDamageControl || !situation.HasFlag(ShipSituation.DamageControlled));
         }
     }
 }
