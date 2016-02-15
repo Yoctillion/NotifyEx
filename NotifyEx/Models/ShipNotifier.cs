@@ -9,6 +9,7 @@ using Livet;
 using MetroTrilithon.Lifetime;
 using MetroTrilithon.Mvvm;
 using NotifyEx.Models.NotifyType;
+using NotifyEx.Models.Settings;
 using NotifyEx.Properties;
 using StatefulModel;
 
@@ -20,18 +21,16 @@ namespace NotifyEx.Models
     internal class ShipNotifier : NotificationObject, IWarningCounter, IDisposableHolder
     {
         public static ShipNotifier Current { get; } = new ShipNotifier();
-
-        private static readonly Settings Settings = Settings.Default;
+        
 
         public bool Enabled
         {
-            get { return Settings.EnabledShipNotifier; }
+            get { return NotifierSettings.EnabledShipNotifier.Value; }
             set
             {
-                if (Settings.EnabledShipNotifier != value)
+                if (NotifierSettings.EnabledShipNotifier.Value != value)
                 {
-                    Settings.EnabledShipNotifier = value;
-                    Settings.Save();
+                    NotifierSettings.EnabledShipNotifier.Value = value;
                     this.RaisePropertyChanged();
                 }
             }
@@ -59,13 +58,12 @@ namespace NotifyEx.Models
 
         public uint NormalWarningCount
         {
-            get { return Settings.WarningShipCount; }
+            get { return NotifierSettings.ShipWarningCount.Value; }
             set
             {
-                if (Settings.WarningShipCount != value)
+                if (NotifierSettings.ShipWarningCount.Value != value)
                 {
-                    Settings.WarningShipCount = value;
-                    Settings.Save();
+                    NotifierSettings.ShipWarningCount.Value = value;
                     this.RaisePropertyChanged();
                     this.RaisePropertyChanged(nameof(this.WarningCount));
                 }
@@ -74,13 +72,12 @@ namespace NotifyEx.Models
 
         public bool EnabledEvent
         {
-            get { return Settings.EnabledEventShipNotifier; }
+            get { return NotifierSettings.EnabledEventShipNotifier.Value; }
             set
             {
-                if (Settings.EnabledEventShipNotifier != value)
+                if (NotifierSettings.EnabledEventShipNotifier.Value != value)
                 {
-                    Settings.EnabledEventShipNotifier = value;
-                    Settings.Save();
+                    NotifierSettings.EnabledEventShipNotifier.Value = value;
                     this.RaisePropertyChanged();
                     this.RaisePropertyChanged(nameof(this.WarningCount));
                 }
@@ -89,13 +86,12 @@ namespace NotifyEx.Models
 
         public uint EventWarningCount
         {
-            get { return Settings.EventWarningShipCount; }
+            get { return NotifierSettings.EventShipWarningCount.Value; }
             set
             {
-                if (Settings.EventWarningShipCount != value)
+                if (NotifierSettings.EventShipWarningCount.Value != value)
                 {
-                    Settings.EventWarningShipCount = value;
-                    Settings.Save();
+                    NotifierSettings.EventShipWarningCount.Value = value;
                     this.RaisePropertyChanged();
                     this.RaisePropertyChanged(nameof(this.WarningCount));
                 }

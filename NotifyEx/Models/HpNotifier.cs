@@ -10,6 +10,7 @@ using NotifyEx.Properties;
 using System.Reactive.Linq;
 using Grabacr07.KanColleWrapper.Models;
 using NotifyEx.Models.NotifyType;
+using NotifyEx.Models.Settings;
 
 namespace NotifyEx.Models
 {
@@ -20,17 +21,14 @@ namespace NotifyEx.Models
     {
         public static HpNotifier Current = new HpNotifier();
 
-        private static readonly Settings Settings = Settings.Default;
-
         public bool Enabled
         {
-            get { return Settings.EnabledLowHpNotifier; }
+            get { return NotifierSettings.EnabledLowHpNotifier.Value; }
             set
             {
-                if (Settings.EnabledLowHpNotifier != value)
+                if (NotifierSettings.EnabledLowHpNotifier.Value != value)
                 {
-                    Settings.EnabledLowHpNotifier = value;
-                    Settings.Save();
+                    NotifierSettings.EnabledLowHpNotifier.Value = value;
                 }
             }
         }
@@ -40,13 +38,12 @@ namespace NotifyEx.Models
         /// </summary>
         public bool EnabledShowDamageControl
         {
-            get { return Settings.EnabledShowDamageControl; }
+            get { return NotifierSettings.EnabledShowDamageControl.Value; }
             set
             {
-                if (Settings.EnabledShowDamageControl != value)
+                if (NotifierSettings.EnabledShowDamageControl.Value != value)
                 {
-                    Settings.EnabledShowDamageControl = value;
-                    Settings.Save();
+                    NotifierSettings.EnabledShowDamageControl.Value = value;
                 }
             }
         }

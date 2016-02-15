@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Grabacr07.KanColleWrapper;
 using Grabacr07.KanColleWrapper.Models;
 using NotifyEx.Models.NotifyType;
+using NotifyEx.Models.Settings;
 using NotifyEx.Properties;
 
 namespace NotifyEx.Models
@@ -18,56 +19,50 @@ namespace NotifyEx.Models
     {
         public static SupplyNotifier Current { get; } = new SupplyNotifier();
 
-        private static readonly Settings Settings = Settings.Default;
-
         public bool Enabled
         {
-            get { return Settings.EnabledSupplyNotifier; }
+            get { return NotifierSettings.EnabledSupplyNotifier.Value; }
             set
             {
-                if (Settings.EnabledSupplyNotifier != value)
+                if (NotifierSettings.EnabledSupplyNotifier.Value != value)
                 {
-                    Settings.EnabledSupplyNotifier = value;
-                    Settings.Save();
+                    NotifierSettings.EnabledSupplyNotifier.Value = value;
                 }
             }
         }
 
         public bool EnabledSortie
         {
-            get { return Settings.EnabledSortieSupplyNotifier; }
+            get { return NotifierSettings.EnabledSortieSupplyNotifier.Value; }
             set
             {
-                if (Settings.EnabledSortieSupplyNotifier != value)
+                if (NotifierSettings.EnabledSortieSupplyNotifier.Value != value)
                 {
-                    Settings.EnabledSortieSupplyNotifier = value;
-                    Settings.Save();
+                    NotifierSettings.EnabledSortieSupplyNotifier.Value = value;
                 }
             }
         }
 
         public bool EnabledExercise
         {
-            get { return Settings.EnabledExerciseSupplyNotifier; }
+            get { return NotifierSettings.EnabledExerciseSupplyNotifier.Value; }
             set
             {
-                if (Settings.EnabledExerciseSupplyNotifier != value)
+                if (NotifierSettings.EnabledExerciseSupplyNotifier.Value != value)
                 {
-                    Settings.EnabledExerciseSupplyNotifier = value;
-                    Settings.Save();
+                    NotifierSettings.EnabledExerciseSupplyNotifier.Value = value;
                 }
             }
         }
 
         public bool EnabledExpendition
         {
-            get { return Settings.EnabledExpenditionSupplyNotifier; }
+            get { return NotifierSettings.EnabledExpenditionSupplyNotifier.Value; }
             set
             {
-                if (Settings.EnabledExpenditionSupplyNotifier != value)
+                if (NotifierSettings.EnabledExpenditionSupplyNotifier.Value != value)
                 {
-                    Settings.EnabledExpenditionSupplyNotifier = value;
-                    Settings.Save();
+                    NotifierSettings.EnabledExpenditionSupplyNotifier.Value = value;
                 }
             }
         }

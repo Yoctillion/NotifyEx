@@ -10,6 +10,7 @@ using Livet;
 using MetroTrilithon.Lifetime;
 using MetroTrilithon.Mvvm;
 using NotifyEx.Models.NotifyType;
+using NotifyEx.Models.Settings;
 using NotifyEx.Properties;
 using StatefulModel;
 
@@ -19,17 +20,14 @@ namespace NotifyEx.Models
     {
         public static SlotNotifier Current { get; } = new SlotNotifier();
 
-        private static readonly Settings Settings = Settings.Default;
-
         public bool Enabled
         {
-            get { return Settings.EnabledSlotNotifier; }
+            get { return NotifierSettings.EnabledSlotNotifier.Value; }
             set
             {
-                if (Settings.EnabledSlotNotifier != value)
+                if (NotifierSettings.EnabledSlotNotifier.Value != value)
                 {
-                    Settings.EnabledSlotNotifier = value;
-                    Settings.Save();
+                    NotifierSettings.EnabledSlotNotifier.Value = value;
                     this.RaisePropertyChanged();
                 }
             }
@@ -38,7 +36,7 @@ namespace NotifyEx.Models
         public uint WarningCount =>
             this.EnabledEvent && Util.IsInEvent
                 ? this.EventWarningCount
-                : Settings.WarningSlotCount;
+                : this.NormalWarningCount;
 
         private uint _remain = uint.MaxValue;
 
@@ -57,13 +55,12 @@ namespace NotifyEx.Models
 
         public uint NormalWarningCount
         {
-            get { return Settings.WarningSlotCount; }
+            get { return NotifierSettings.SlotWarningCount.Value; }
             set
             {
-                if (Settings.WarningSlotCount != value)
+                if (NotifierSettings.SlotWarningCount.Value != value)
                 {
-                    Settings.WarningSlotCount = value;
-                    Settings.Save();
+                    NotifierSettings.SlotWarningCount.Value = value;
                     this.RaisePropertyChanged();
                     this.RaisePropertyChanged(nameof(this.WarningCount));
                 }
@@ -72,13 +69,12 @@ namespace NotifyEx.Models
 
         public bool EnabledEvent
         {
-            get { return Settings.EnabledEventSlotNotifier; }
+            get { return NotifierSettings.EnabledEventSlotNotifier.Value; }
             set
             {
-                if (Settings.EnabledEventSlotNotifier != value)
+                if (NotifierSettings.EnabledEventSlotNotifier.Value != value)
                 {
-                    Settings.EnabledEventSlotNotifier = value;
-                    Settings.Save();
+                    NotifierSettings.EnabledEventSlotNotifier.Value = value;
                     this.RaisePropertyChanged();
                     this.RaisePropertyChanged(nameof(this.WarningCount));
                 }
@@ -87,13 +83,12 @@ namespace NotifyEx.Models
 
         public uint EventWarningCount
         {
-            get { return Settings.EventWarningSlotCount; }
+            get { return NotifierSettings.EventSlotWarningCount.Value; }
             set
             {
-                if (Settings.EventWarningSlotCount != value)
+                if (NotifierSettings.EventSlotWarningCount.Value != value)
                 {
-                    Settings.EventWarningSlotCount = value;
-                    Settings.Save();
+                    NotifierSettings.EventSlotWarningCount.Value = value;
                     this.RaisePropertyChanged();
                     this.RaisePropertyChanged(nameof(this.WarningCount));
                 }
