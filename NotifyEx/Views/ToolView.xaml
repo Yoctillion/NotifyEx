@@ -202,6 +202,53 @@
                           IsEnabled="{Binding EnabledSupplyNotifier, Mode=OneWay}"
                           Margin="0,3,15,3" />
             </StackPanel>
+            
+            <Border Height="1"
+                    Background="{DynamicResource BorderBrushKey}"
+                    Margin="0,5" />
+            
+            <TextBlock Text="基地航空队"
+                       Style="{DynamicResource HeaderTextStyleKey}" />
+
+            <CheckBox Content="启用状态通知"
+                      IsChecked="{Binding EnabledLandBaseNotifier}"
+                      Margin="3,0" />
+            
+            <StackPanel Orientation="Horizontal"
+                        Margin="20,0,0,0">
+                <CheckBox Content="未配备完成"
+                          IsChecked="{Binding ShowUncompletedAirCorps}"
+                          IsEnabled="{Binding EnabledLandBaseNotifier}"
+                          Margin="0,3,15,3" />
+                
+                <CheckBox Content="不在出击状态 ※"
+                          IsChecked="{Binding ShowNotReadyAirCorps}"
+                          IsEnabled="{Binding EnabledLandBaseNotifier}"
+                          Margin="0,3,15,3">
+                    <CheckBox.ToolTip>
+                        <TextBlock Text="不是 出击 或 防空 状态" />
+                    </CheckBox.ToolTip>
+                </CheckBox>
+                
+                <CheckBox Content="补给"
+                          IsChecked="{Binding ShowNeedSupplyAirCorps}"
+                          IsEnabled="{Binding EnabledLandBaseNotifier}"
+                          Margin="0,3,15,3" />
+                
+                <CheckBox Content="疲劳"
+                          IsChecked="{Binding ShowTiredAirCorps}"
+                          IsEnabled="{Binding EnabledLandBaseNotifier}"
+                          Margin="0,3,15,3" />
+            </StackPanel>
+            
+            <CheckBox Content="进入活动海域时通知 ※"
+                      IsChecked="{Binding ShowLandBaseNotificationBeforeSelectMap}"
+                      IsEnabled="{Binding EnabledLandBaseNotifier}"
+                      Margin="0,3">
+                <CheckBox.ToolTip>
+                    <TextBlock Text="每次出击界面*首次*进入活动海域，选择地图前" />
+                </CheckBox.ToolTip>
+            </CheckBox>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

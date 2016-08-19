@@ -14,6 +14,7 @@ namespace NotifyEx.ViewModels
         private readonly SlotNotifier _slotNotifier = SlotNotifier.Current;
         private readonly HpNotifier _hpNotifier = HpNotifier.Current;
         private readonly SupplyNotifier _supplyNotifier = SupplyNotifier.Current;
+        private readonly LandBaseNotifier _landBaseNotifier = LandBaseNotifier.Current;
 
         public bool EnabledShipNotifier
         {
@@ -197,5 +198,82 @@ namespace NotifyEx.ViewModels
             }
         }
 
+        public bool EnabledLandBaseNotifier
+        {
+            get { return this._landBaseNotifier.Enabled; }
+            set
+            {
+                if (this._landBaseNotifier.Enabled != value)
+                {
+                    this._landBaseNotifier.Enabled = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public bool ShowNotReadyAirCorps
+        {
+            get { return this._landBaseNotifier.ShowNotReadyAirCorps; }
+            set
+            {
+                if (this._landBaseNotifier.ShowNotReadyAirCorps != value)
+                {
+                    this._landBaseNotifier.ShowNotReadyAirCorps = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public bool ShowLandBaseNotificationBeforeSelectMap
+        {
+            get { return this._landBaseNotifier.ShowNotificationBeforeSelectMap; }
+            set
+            {
+                if (this._landBaseNotifier.ShowNotificationBeforeSelectMap != value)
+                {
+                    this._landBaseNotifier.ShowNotificationBeforeSelectMap = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public bool ShowUncompletedAirCorps
+        {
+            get { return this._landBaseNotifier.ShowUncompletedAirCorps; }
+            set
+            {
+                if (this._landBaseNotifier.ShowUncompletedAirCorps != value)
+                {
+                    this._landBaseNotifier.ShowUncompletedAirCorps = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public bool ShowNeedSupplyAirCorps
+        {
+            get { return this._landBaseNotifier.ShowNeedSupplyAirCorps; }
+            set
+            {
+                if (this._landBaseNotifier.ShowNeedSupplyAirCorps != value)
+                {
+                    this._landBaseNotifier.ShowNeedSupplyAirCorps = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
+
+        public bool ShowTiredAirCorps
+        {
+            get { return this._landBaseNotifier.ShowTiredAirCorps; }
+            set
+            {
+                if (this._landBaseNotifier.ShowTiredAirCorps != value)
+                {
+                    this._landBaseNotifier.ShowTiredAirCorps = value;
+                    this.RaisePropertyChanged();
+                }
+            }
+        }
     }
 }

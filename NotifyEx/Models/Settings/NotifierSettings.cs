@@ -68,6 +68,28 @@ namespace NotifyEx.Models.Settings
 
         #endregion
 
+        #region Land base
+
+        public static SerializableProperty<bool> EnabledLandBaseNotifier { get; }
+            = new SerializableProperty<bool>(GetKey(), Provider.Roaming, true) { AutoSave = true };
+
+        public static SerializableProperty<bool> ShowLandBaseNotificationBeforeSelectMap { get; }
+            = new SerializableProperty<bool>(GetKey(), Provider.Roaming, false) { AutoSave = true };
+
+        public static SerializableProperty<bool> ShowUncompletedAirCorps { get; }
+            = new SerializableProperty<bool>(GetKey(), Provider.Roaming, true) { AutoSave = true };
+
+        public static SerializableProperty<bool> ShowNotReadyAirCorps { get; }
+            = new SerializableProperty<bool>(GetKey(), Provider.Roaming, true) { AutoSave = true };
+
+        public static SerializableProperty<bool> ShowNeedSupplyAirCorps { get; }
+            = new SerializableProperty<bool>(GetKey(), Provider.Roaming, true) { AutoSave = true };
+
+        public static SerializableProperty<bool> ShowTiredAirCorps { get; }
+            = new SerializableProperty<bool>(GetKey(), Provider.Roaming, true) { AutoSave = true };
+
+        #endregion
+
         private static string GetKey([CallerMemberName] string propertyName = "")
         {
             return $"{nameof(NotifierSettings)}.{propertyName}";

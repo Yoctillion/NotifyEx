@@ -144,10 +144,13 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\LandBaseNotifier.cs" />
+    <Compile Include="Models\base_air_corps.cs" />
     <Compile Include="Models\HomeportSpaceProcess.cs" />
     <Compile Include="Models\HpNotifier.cs" />
     <Compile Include="Models\NotifyHost.cs" />
     <Compile Include="Models\NotifyType\INotifyType.cs" />
+    <Compile Include="Models\NotifyType\LandBaseType.cs" />
     <Compile Include="Models\NotifyType\WarningType.cs" />
     <Compile Include="Models\Settings\NotifierSettings.cs" />
     <Compile Include="Models\Settings\Provider.cs" />
