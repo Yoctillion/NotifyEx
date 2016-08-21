@@ -152,6 +152,8 @@
     <Compile Include="Models\NotifyType\INotifyType.cs" />
     <Compile Include="Models\NotifyType\LandBaseType.cs" />
     <Compile Include="Models\NotifyType\WarningType.cs" />
+    <Compile Include="Models\req_air_corps_set_plane.cs" />
+    <Compile Include="Models\req_air_corps_supply.cs" />
     <Compile Include="Models\Settings\NotifierSettings.cs" />
     <Compile Include="Models\Settings\Provider.cs" />
     <Compile Include="Models\ShipNotifier.cs" />

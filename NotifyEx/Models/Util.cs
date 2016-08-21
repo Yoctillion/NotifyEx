@@ -14,5 +14,13 @@ namespace NotifyEx.Models
             => KanColleClient.Current.Master?.MapAreas.Values
                 .Any(area => area.RawData.api_type == 1)
                ?? false;
+
+        public static int FirstIndex<T>(this IEnumerable<T> source, Func<T, bool> selector)
+        {
+            return source
+                .Select((item, index) => new {index, result = selector(item)})
+                .First(pair => pair.result)
+                .index;
+        }
     }
 }

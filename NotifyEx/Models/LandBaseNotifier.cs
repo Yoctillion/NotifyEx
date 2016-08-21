@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reactive.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Grabacr07.KanColleWrapper;
 using Grabacr07.KanColleWrapper.Models;
 using Livet;
+using MetroTrilithon.Mvvm;
 using NotifyEx.Models.NotifyType;
 using NotifyEx.Models.Settings;
 
@@ -102,6 +105,31 @@ namespace NotifyEx.Models
                 return this.CheckSituation(true);
             });
             NotifyHost.Register("/kcsapi/api_get_member/sortie_conditions", LandBaseType.Instance, s => this.CheckSituation());
+
+            var proxy = KanColleClient.Current.Proxy;
+
+            proxy.ApiSessionSource
+                .Where(s => s.Request.PathAndQuery == "/kcsapi/api_req_air_corps/set_plane")
+                .TryParse<req_air_corps_set_plane>()
+                .Subscribe(d => this.SetPlane(int.Parse(d.Request["api_base_id"]), d.Data));
+
+            proxy.ApiSessionSource
+                .Where(s => s.Request.PathAndQuery == "/kcsapi/api_req_air_corps/change_name")
+                .TryParse()
+                .Subscribe(d => this.UpdateName(int.Parse(d.Request["api_base_id"]), d.Request["api_name"]));
+
+            proxy.ApiSessionSource
+                .Where(s => s.Request.PathAndQuery == "/kcsapi/api_req_air_corps/supply")
+                .TryParse<req_air_corps_supply>()
+                .Subscribe(d => this.Supply(int.Parse(d.Request["api_base_id"]), d.Data));
+
+            proxy.ApiSessionSource
+                .Where(s => s.Request.PathAndQuery == "/kcsapi/api_req_air_corps/set_action")
+                .TryParse()
+                .Subscribe(d => this.UpdateAction(
+                    SplitParam(d.Request["api_base_id"]),
+                    SplitParam(d.Request["api_action_kind"]))
+                );
         }
 
         private base_air_corps[] _data;
@@ -148,6 +176,59 @@ namespace NotifyEx.Models
             return airCorps.Any()
                 ? $"{string.Join(", ", airCorps.Select(s => s.api_name))} {info}"
                 : "";
+        }
+
+        private void SetPlane(int baseId, req_air_corps_set_plane data)
+        {
+            if (this._data == null) return;
+
+            var airCorp = this.GetAirCorp(baseId);
+            this.Update(airCorp, data.api_plane_info);
+        }
+
+        private void UpdateName(int baseId, string name)
+        {
+            if (this._data == null) return;
+
+            var airCorp = this.GetAirCorp(baseId);
+            airCorp.api_name = name;
+        }
+
+        private void Supply(int baseId, req_air_corps_supply data)
+        {
+            if (this._data == null) return;
+
+            var airCorp = this.GetAirCorp(baseId);
+            this.Update(airCorp, data.api_plane_info);
+        }
+
+        private base_air_corps GetAirCorp(int baseId)
+        {
+            return this._data.First(b => b.api_rid == baseId);
+        }
+
+        private void UpdateAction(IEnumerable<int> baseIds, IEnumerable<int> actionIds)
+        {
+            if (this._data == null) return;
+
+            foreach (var pair in baseIds.Zip(actionIds, (b, a) => new { Id = b, Action = a }))
+            {
+                this.GetAirCorp(pair.Id).api_action_kind = pair.Action;
+            }
+        }
+
+        private void Update(base_air_corps airCorp, api_plane_info[] squadrons)
+        {
+            foreach (var squadron in squadrons)
+            {
+                var squadronIndex = airCorp.api_plane_info.FirstIndex(s => s.api_squadron_id == squadron.api_squadron_id);
+                airCorp.api_plane_info[squadronIndex] = squadron;
+            }
+        }
+
+        private static IEnumerable<int> SplitParam(string param)
+        {
+            return param.Split(',').Select(int.Parse);
         }
     }
 }
